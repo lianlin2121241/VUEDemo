@@ -15,7 +15,7 @@ export default {
   name: 'todosListCompleted',
   data () {
     return {
-      list: storage.fetch(),
+      list: this.sortData(),
       tempItem: {}
     }
   },
@@ -27,11 +27,26 @@ export default {
     updateTodo () {
       bus.$emit('updateTodo', this.tempItem)
       this.tempItem = {}
+    },
+    sortData () {
+      var dataList = storage.fetch()
+      var sortData = dataList.sort(function (pre, next) {
+        if (pre.meta.overTime === 0 && pre.meta.overTime === 0) {
+          return true
+        } else if (pre.meta.overTime !== 0 && pre.meta.overTime === 0) {
+          return true
+        } else if (pre.meta.overTime === 0 && pre.meta.overTime !== 0) {
+          return false
+        } else {
+          return pre.meta.overTime - pre.meta.overTime
+        }
+      })
+      return sortData
     }
   },
   mounted () {
     bus.$on('completeTodo', () => {
-      this.list = storage.fetch()
+      this.list = this.sortData()
     })
   }
 }

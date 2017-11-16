@@ -21,6 +21,9 @@ export default {
   },
   methods: {
     addTodo () {
+      if (!this.msg) {
+        return
+      }
       bus.$emit('addTodo', this.msg)
       this.msg = ''
     }

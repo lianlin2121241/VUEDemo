@@ -7,10 +7,10 @@
             <p v-show="item.id!=tempItem.id||!tempItem.isEdit">{{item.label}}</p>
             <p v-show="item.id==tempItem.id&&tempItem.isEdit"><input type="text" class="form-control" @keydown.enter="updateTodo(item)" v-model="tempItem.label"></p>
             <span class="input-group-btn">
-              <button class="" @click="overTodo(item)" class="glyphicon glyphicon-ok" type="button"></button>
+              <button class="btn btn-primary btn-xs" @click="overTodo(item)" type="button"><span class="glyphicon glyphicon-ok"></span></button>
             </span>
             <span class="input-group-btn">
-              <button class="" @click="delTodo(item)" type="button" class="glyphicon glyphicon-remove"></button>
+              <button class="btn btn-danger btn-xs" @click="delTodo(item)" type="button"><span class="glyphicon glyphicon-remove"></span></button>
             </span>
           </div>
         </li>
@@ -90,3 +90,9 @@ export default {
   }
 }
 </script>
+<style>
+.btn{
+  margin: 0px 4px;
+  
+}
+</style>
