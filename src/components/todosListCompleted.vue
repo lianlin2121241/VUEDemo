@@ -31,15 +31,7 @@ export default {
     sortData () {
       var dataList = storage.fetch()
       var sortData = dataList.sort(function (pre, next) {
-        if (pre.meta.overTime === 0 && pre.meta.overTime === 0) {
-          return true
-        } else if (pre.meta.overTime !== 0 && pre.meta.overTime === 0) {
-          return true
-        } else if (pre.meta.overTime === 0 && pre.meta.overTime !== 0) {
-          return false
-        } else {
-          return pre.meta.overTime - pre.meta.overTime
-        }
+        return next.meta.overTime - pre.meta.overTime
       })
       return sortData
     }
