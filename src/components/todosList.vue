@@ -1,21 +1,22 @@
 <template>
 	<div>
-    <ul class="list-group">
+    <ul class="list-group" v-if="notOverCount > 0">
       <draggable v-model="list">
-        <li v-for="item in list" @dblclick="editTodo(item)" class="list-group-item" v-if="!item.isFinished&&!item.isOver">
+        <li v-for="item in list" @dblclick="editTodo(item)" class="list-group-item my-handle" v-if="!item.isFinished&&!item.isOver">
           <div class="input-group">
             <p v-show="item.id!=tempItem.id||!tempItem.isEdit">{{item.label}}</p>
             <p v-show="item.id==tempItem.id&&tempItem.isEdit"><input type="text" class="form-control" @keydown.enter="updateTodo(item)" v-model="tempItem.label"></p>
             <span class="input-group-btn">
-              <button class="btn btn-primary btn-xs" @click="overTodo(item)" type="button"><span class="glyphicon glyphicon-ok"></span></button>
+              <button class="btn btn-primary btn-xs" @click="overTodo(item)" type="button" title="完成任务"><span class="glyphicon glyphicon-ok"></span></button>
             </span>
             <span class="input-group-btn">
-              <button class="btn btn-danger btn-xs" @click="delTodo(item)" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+              <button class="btn btn-danger btn-xs" @click="delTodo(item)" type="button" title="删除任务"><span class="glyphicon glyphicon-remove"></span></button>
             </span>
           </div>
         </li>
       </draggable>
     </ul>
+    <div class="no-data" v-else><span>无待完成任务</span></div>
 	</div>
 </template>
 <script>
@@ -45,9 +46,21 @@ export default {
       this.tempItem.isEdit = true
     },
     updateTodo (item) {
+      if (!this.tempItem.label) {
+        this.tempItem = {}
+        return
+      }
       item.label = this.tempItem.label
       item.meta.updateTime = new Date().getTime()
       this.tempItem = {}
+    }
+  },
+  computed: {
+    notOverCount: function () {
+      var notOverList = this.list.filter(function (item) {
+        return !item.isFinished && !item.isOver
+      })
+      return notOverList.length
     }
   },
   watch: {
@@ -94,5 +107,30 @@ export default {
 .btn{
   margin: 0px 4px;
   
+}
+.no-data{
+  text-align: center;
+  font-size: 18px;
+  padding: 8px 0px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+}
+.no-data span{
+  display: inline-block;
+  animation: mymove 2s linear infinite;
+}
+@keyframes mymove {
+  0%{
+    transform: rotate(0deg);
+  }
+  25%{
+    transform: rotate(7deg);
+  }
+  75%{
+    transform: rotate(-7deg);
+  }
+  100%{
+    transform: rotate(0deg);
+  }
 }
 </style>

@@ -24,6 +24,8 @@ module.exports = {
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     // 禁止扩展原生类型
-    'no-extend-native': 0
+    'no-extend-native': 0,
+    // 禁止出现未使用过的变量
+    "no-unused-vars": 0
   }
 }
