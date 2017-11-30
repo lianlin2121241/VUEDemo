@@ -3,13 +3,13 @@
     <ul class="list-group" v-if="notOverCount > 0">
       <draggable v-model="list">
         <li v-for="item in list" @dblclick="editTodo(item)" class="list-group-item my-handle" v-if="!item.isFinished&&!item.isOver">
-          <div class="input-group">
+          <div class="input-group" v-bind:class="{'div-block':(item.id==tempItem.id&&tempItem.isEdit)}">
             <p v-show="item.id!=tempItem.id||!tempItem.isEdit">{{item.label}}</p>
             <p v-show="item.id==tempItem.id&&tempItem.isEdit"><input type="text" class="form-control" @keydown.enter="updateTodo(item)" v-model="tempItem.label"></p>
-            <span class="input-group-btn">
+            <span class="input-group-btn" v-show="item.id!=tempItem.id||!tempItem.isEdit">
               <button class="btn btn-primary btn-xs" @click="overTodo(item)" type="button" title="完成任务"><span class="glyphicon glyphicon-ok"></span></button>
             </span>
-            <span class="input-group-btn">
+            <span class="input-group-btn" v-show="item.id!=tempItem.id||!tempItem.isEdit">
               <button class="btn btn-danger btn-xs" @click="delTodo(item)" type="button" title="删除任务"><span class="glyphicon glyphicon-remove"></span></button>
             </span>
           </div>
@@ -114,6 +114,16 @@ export default {
   padding: 8px 0px;
   border: 1px solid #dddddd;
   border-radius: 8px;
+}
+.div-block{
+  display: block;
+}
+.div-block{
+  display: block;
+}
+.div-block.input-group .form-control{
+  display: block;
+  float: none;
 }
 .no-data span{
   display: inline-block;
