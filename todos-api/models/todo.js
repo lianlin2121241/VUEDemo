@@ -37,6 +37,28 @@ class Todo {
     }
 
     /**
+     * @desc 更新todo任务
+     * @param {object} params 查询条件
+     * @param {function} callback 回调函数
+     */
+    update(params = null, callback) {
+        if (!params) {
+            callback(new Error('缺少参数'))
+        }
+        mongodb.updateMany("todos", params, {
+            $set: {
+                "label": this.label,
+                "meta.update":new Date() 
+            }
+        }, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, result);
+        })
+    }
+
+    /**
      * @static
      * @desc 根据条件查询todo列表
      * @param {string} name 用户名称

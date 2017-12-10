@@ -13,5 +13,7 @@ router.post('/logout',userController.logout);
 
 // 添加任务
 router.post('/addTodo',todoController.addTodo);
+// 修改任务
+router.post('/updateTodo',todoController.updateTodo);
 
 module.exports = router;

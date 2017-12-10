@@ -119,9 +119,8 @@ exports.deleteMany = function (collectionName, json, callback) {
     });
 }
 
-//修改
 /**
- * 
+ * @desc 更新数据
  * @param {string} collectionName 集合名称
  * @param {object} json1 查询条件
  * @param {object} json2 要修改的数据
@@ -136,7 +135,7 @@ exports.updateMany = function (collectionName, json1, json2, callback) {
             json1,
             json2,
             function (err, results) {
-                callback(err, results);
+                callback(err, results.result.ok);
                 mc.close();
             });
     })
