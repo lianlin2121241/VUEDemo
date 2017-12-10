@@ -30,9 +30,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: settings.cookieSecret,
   key: settings.db,
-  cookie: {maxAge: 1000 * 60 * 60 * 24 * 30},
-  store: new MongoStore({db: require('./models/db')})
+  cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
+  store: new MongoStore({
+    url: 'mongodb://' + settings.host + '/' + settings.db,
+    autoRemove: 'native'
+  })
 }))
+// store: new MongoStore({
+//   db: settings.db,
+//   host: settings.host,
+//   port: settings.port
+// })
 
 app.use(flash());
 
@@ -40,14 +48,14 @@ app.use('/', index);
 app.use('/server', server);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

@@ -1,5 +1,10 @@
 var mongodb = require('./db');
 
+/**
+ * @class
+ * @classdesc 用户信息model类
+ * @desc 初始化用户实例
+ */
 class User{
     constructor(user){
         this.name = user.name;
@@ -7,7 +12,10 @@ class User{
         this.email = user.email;
     }
 
-    // 保存用户
+    /**
+     * @desc 保存用户
+     * @param {function} callback 回调函数
+     */
     save(callback){
         let user = {
             name: this.name,
@@ -18,49 +26,28 @@ class User{
                 updateTime: 0
             }
         };
-        mongodb.open(function(err, db){
+        mongodb.insertOne("users",user,function(err,user){
             if(err){
                 return callback(err);
             }
-            db.collection('users',function(err,collection){
-                if(err){
-                    mongodb.close();
-                    return callback(err);
-                }
-                collection.insert(user,{
-                    safe:true
-                },function(err,user){
-                    mongodb.close()
-                    if(err){
-                        return callback(err);
-                    }
-                    callback(null,user[0]);
-                })
-            })
+            callback(null,user[0]);
         })
     }
 
-    // 根据姓名查询用户
+    /**
+     * @static
+     * @desc 根据姓名查询用户
+     * @param {string} name 用户名称
+     * @param {function} callback 回调函数
+     */
     static get(name,callback){
-        mongodb.open(function(err,db){
+        mongodb.find("users",{
+            name:name
+        },function(err,user){
             if(err){
                 return callback(err);
             }
-            db.collection('users',function(err,collection){
-                if(err){
-                    mongodb.close();
-                    return callback(err);
-                }
-                collection.findOne({
-                    name:name
-                },function(err,user){
-                    mongodb.close();
-                    if(err){
-                        return callback(err);
-                    }
-                    callback(null,user);
-                })
-            })
+            callback(null,user);
         })
     }
 }

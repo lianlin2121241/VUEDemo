@@ -20,6 +20,6 @@
   "devDependencies": {
     "connect-mongo": "^2.0.0",
     "express-session": "^1.15.6",
-    "mongodb": "^3.0.0-rc0"
+    "mongodb": "^2.2.24"
   }
 }
