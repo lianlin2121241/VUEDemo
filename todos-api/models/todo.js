@@ -48,7 +48,7 @@ class Todo {
         mongodb.updateMany("todos", params, {
             $set: {
                 "label": this.label,
-                "meta.update":new Date() 
+                "meta.update": new Date()
             }
         }, function (err, result) {
             if (err) {
@@ -61,16 +61,29 @@ class Todo {
     /**
      * @static
      * @desc 根据条件查询todo列表
-     * @param {string} name 用户名称
-     * @param {function} callback 回调函数
+     * @param {object} params 查询条件
+     * @param {object or function} P 分页对象或者回调函数
+     * @param {function or undefind} C 回调函数
      */
-    static get(params = {}, callback) {
-        mongodb.find("todos", params, function (err, todo) {
+    static get(params = {}, P, C) {
+        var callback=null;
+        var pagination=null;
+        var argArr=[];
+        argArr.push("todos", params);
+        if (arguments.length == 2){
+            callback=P;
+        }else if(arguments.length == 3){
+            pagination=P;
+            callback=C;
+            argArr.push(pagination);
+        }
+        argArr.push(function (err, todo) {
             if (err) {
                 return callback(err);
             }
             callback(null, todo);
-        })
+        });
+        mongodb.find.apply(this,argArr);
     }
 }
 module.exports = Todo;

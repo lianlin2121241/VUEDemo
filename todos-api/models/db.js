@@ -49,8 +49,8 @@ exports.insertOne = function (collectionName, json, callback) {
  * @param {function or object} C 回调函数或者过滤对象
  * 例如：
  *  {
- *      "pageamount":10, 每页条数
- *      "page":10, 第几页
+ *      "pageSize":10, 每页条数
+ *      "currentPage":10, 第几页
  *      "sort":{} 排序
  *  }
  * @param {undefind or function} D 不传或者回调函数
@@ -66,11 +66,11 @@ exports.find = function (collectionName, json, C, D) {
     } else if (arguments.length == 4) {
         var callback = D;
         var args = C;
-        //args是个对象，里面有sort，pageamount,page属性
+        //args是个对象，里面有sort，pageSize,currentPage属性
         //应该省略的条数
-        var skipnumber = args.pageamount * args.page || 0;
+        var skipnumber = args.pageSize * args.currentPage || 0;
         //数目限制
-        var limit = args.pageamount || 0;
+        var limit = args.pageSize || 0;
         //排序方式
         var sort = args.sort || {};
     } else {

@@ -15,5 +15,7 @@ router.post('/logout',userController.logout);
 router.post('/addTodo',todoController.addTodo);
 // 修改任务
 router.post('/updateTodo',todoController.updateTodo);
+// 获取待完成任务列表
+router.post('/getTodosUnfinished',todoController.getTodosUnfinished);
 
 module.exports = router;

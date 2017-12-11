@@ -65,3 +65,29 @@ module.exports.updateTodo = (req, res) => {
         })
     })
 }
+
+/**
+ * @desc 获取待完成任务列表
+ * @param {object} req 
+ * @param {object} res 
+ */
+module.exports.getTodosUnfinished = (req, res) => {
+    var currentPage = req.body.currentPage||0;
+    var pageSize = req.body.pageSize||0;
+
+    var user=req.session.user;
+    todoModel.get({
+        user:user
+    },{
+        currentPage: currentPage,
+        pageSize: pageSize,
+        sort:{'sort':1}
+    }, function (err, todos) {
+        if (err) {
+            req.flash('error', err);
+            return res.json(utils.resultData(false, null, err.message));
+        }
+        req.flash('success', todos);
+        res.json(utils.resultData(true,todos));
+    })
+}
