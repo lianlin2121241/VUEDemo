@@ -59,7 +59,7 @@ module.exports.updateTodo = (req, res) => {
                 req.flash('success', '修改成功');
                 res.json(utils.resultData(true));
             }else{
-                req.flash('error', '修改失败');
+                req.flash('error', '失败');
                 res.json(utils.resultData(false, '','修改失败'));
             }
         })
