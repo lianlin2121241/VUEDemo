@@ -5,17 +5,17 @@ var userController = require('../controller/user');
 var todoController = require('../controller/todo');
 
 // 注册
-router.post('/reg',userController.reg);
+router.post('/reg', userController.reg);
 // 登录
-router.post('/login',userController.login);
+router.post('/login', userController.login);
 // 登出
-router.post('/logout',userController.logout);
+router.post('/logout', userController.logout);
 
 // 添加任务
-router.post('/addTodo',todoController.addTodo);
+router.post('/addTodo', userController.isLogin, todoController.addTodo);
 // 修改任务
-router.post('/updateTodo',todoController.updateTodo);
+router.post('/updateTodo', userController.isLogin, todoController.updateTodo);
 // 获取待完成任务列表
-router.post('/getTodosUnfinished',todoController.getTodosUnfinished);
+router.post('/getTodosUnfinished', userController.isLogin, todoController.getTodosUnfinished);
 
 module.exports = router;

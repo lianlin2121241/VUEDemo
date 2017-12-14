@@ -77,7 +77,9 @@ module.exports.getTodosUnfinished = (req, res) => {
 
     var user=req.session.user;
     todoModel.get({
-        user:user
+        "user._id":user._id,
+        "isDelete":false,
+        "isOver":false
     },{
         currentPage: currentPage,
         pageSize: pageSize,
@@ -87,7 +89,7 @@ module.exports.getTodosUnfinished = (req, res) => {
             req.flash('error', err);
             return res.json(utils.resultData(false, null, err.message));
         }
-        req.flash('success', todos);
+        req.flash('success', '查询成功');
         res.json(utils.resultData(true,todos));
     })
 }

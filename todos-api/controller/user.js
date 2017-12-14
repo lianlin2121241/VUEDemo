@@ -82,3 +82,17 @@ module.exports.logout = (req, res) => {
         res.json(utils.resultData(false, null, e.message));
     }
 }
+
+/**
+ * 是否登录
+ * @param {*} req 
+ * @param {*} res 
+ */
+module.exports.isLogin = (req, res, next) => {
+    let user = req.session.user;
+    if (!user) {
+        req.flash('error', '用户未登录');
+        return res.json(utils.resultData(false, '', '用户未登录'));
+    }
+    next();
+}
