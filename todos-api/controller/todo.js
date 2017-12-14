@@ -93,3 +93,43 @@ module.exports.getTodosUnfinished = (req, res) => {
         res.json(utils.resultData(true,todos));
     })
 }
+
+/**
+ * @desc 更新任务排序
+ * @param {object} req 
+ * @param {object} res 
+ */
+module.exports.updateSort = (req, res) => {
+    var sorts = req.body.sorts||[];
+    if(sorts.length==0){
+        return res.json(utils.resultData(false, null, "无可排序数据"));
+    }
+
+    var user=req.session.user;
+
+    let sortsLen=sorts.length;
+    let updateCount=0;
+    for(let i=0;i<sortsLen;i++){
+        (function(index){
+            var newTodo = new todoModel()
+            newTodo.updateByContent({ _id: ObjectID(sorts[index]) },{
+                "sort":index
+            }, function (err, result) {
+                if (err) {
+                    req.flash('error', err);
+                    return res.json(utils.resultData(false, null, err.message));
+                }
+                if(result===1){
+                    updateCount++;
+                    if(updateCount===sortsLen){
+                        req.flash('success', '修改成功');
+                        res.json(utils.resultData(true));
+                    }
+                }else{
+                    req.flash('error', '失败');
+                    res.json(utils.resultData(false, '','修改失败'));
+                }
+            })
+        })(i)
+    }
+}

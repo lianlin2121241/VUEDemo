@@ -17,5 +17,7 @@ router.post('/addTodo', userController.isLogin, todoController.addTodo);
 router.post('/updateTodo', userController.isLogin, todoController.updateTodo);
 // 获取待完成任务列表
 router.post('/getTodosUnfinished', userController.isLogin, todoController.getTodosUnfinished);
+// 排序任务列表
+router.post('/updateSort', userController.isLogin, todoController.updateSort);
 
 module.exports = router;
