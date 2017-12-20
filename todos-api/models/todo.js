@@ -106,6 +106,21 @@ class Todo {
         });
         mongodb.find.apply(this,argArr);
     }
+    
+    /**
+     * @static
+     * @desc 获取目标的总量
+     * @param {object} params 查询条件
+     * @param {function} callback 回调函数
+     */
+    static getAllCount(params = {}, callback) {
+        mongodb.getAllCount("todos", params, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, result);
+        })
+    }
 }
 module.exports = Todo;
 

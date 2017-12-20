@@ -140,3 +140,19 @@ exports.updateMany = function (collectionName, json1, json2, callback) {
             });
     })
 }
+
+/**
+ * @desc 得到总量
+ * @param {string} collectionName 集合名称
+ * @param {object} json1 查询条件
+ * @param {function} callback 回调函数
+ */
+exports.getAllCount = function (collectionName,params={},callback) {
+    _connectDB(function (err, mc) {
+        var db = mc.db(Settings.db);
+        db.collection(collectionName).count(params).then(function(count) {
+            callback(err,count);
+            mc.close();
+        });
+    })
+}

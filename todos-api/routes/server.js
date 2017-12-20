@@ -17,7 +17,13 @@ router.post('/addTodo', userController.isLogin, todoController.addTodo);
 router.post('/updateTodo', userController.isLogin, todoController.updateTodo);
 // 获取待完成任务列表
 router.post('/getTodosUnfinished', userController.isLogin, todoController.getTodosUnfinished);
+// 获取已完成任务列表
+router.post('/getTodosFinished', userController.isLogin, todoController.getTodosFinished);
 // 排序任务列表
 router.post('/updateSort', userController.isLogin, todoController.updateSort);
+// 完成任务
+router.post('/finishTodos', userController.isLogin, todoController.finishTodos);
+// 删除任务
+router.post('/deleteTodos', userController.isLogin, todoController.deleteTodos);
 
 module.exports = router;

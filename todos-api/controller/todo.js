@@ -95,6 +95,49 @@ module.exports.getTodosUnfinished = (req, res) => {
 }
 
 /**
+ * @desc 获取待完成任务列表
+ * @param {object} req 
+ * @param {object} res 
+ */
+module.exports.getTodosFinished = (req, res) => {
+    var currentPage = req.body.currentPage||0;
+    var pageSize = req.body.pageSize||0;
+
+    var user=req.session.user;
+    todoModel.get({
+        "user._id":user._id,
+        "isDelete":false,
+        "isOver":true
+    },{
+        currentPage: currentPage,
+        pageSize: pageSize,
+        sort:{'meta.overTime':-1}
+    }, function (err, todos) {
+        if (err) {
+            req.flash('error', err);
+            return res.json(utils.resultData(false, null, err.message));
+        }
+        todoModel.getAllCount({
+            "user._id":user._id,
+            "isDelete":false,
+            "isOver":true
+        },function(err,count){
+            if (err) {
+                req.flash('error', err);
+                return res.json(utils.resultData(false, null, err.message));
+            }
+            req.flash('success', '查询成功');
+            res.json(utils.resultData(true,{
+                currentPage: currentPage,
+                pageSize: pageSize,
+                totalCount:count,
+                resultData:todos
+            }));
+        })
+    })
+}
+
+/**
  * @desc 更新任务排序
  * @param {object} req 
  * @param {object} res 
@@ -132,4 +175,70 @@ module.exports.updateSort = (req, res) => {
             })
         })(i)
     }
+}
+
+/**
+ * @desc 完成任务
+ * @param {object} req 
+ * @param {object} res 
+ */
+module.exports.finishTodos = (req, res) => {
+    execUpdate(req, res,{
+        "isOver":true,
+        "meta.overTime":new Date()
+    },"完成")
+}
+
+/**
+ * @desc 删除任务
+ * @param {object} req 
+ * @param {object} res 
+ */
+module.exports.deleteTodos = (req, res) => {
+    execUpdate(req, res,{
+        "isDelete":true,
+        "meta.deleteTime":new Date()
+    },"删除")
+}
+
+/**
+ * @desc 删除任务
+ * @param {object} req 
+ * @param {object} res 
+ * @param {object} updateParams 更新字段
+ * @param {string} msg 消息
+ */
+function execUpdate(req, res,updateParams={},msg){
+    var id = req.body.id;
+    if(!id){
+        req.flash('error', '无任务ID');
+        return res.json(utils.resultData(false, null, '无任务ID')); 
+    }
+
+    todoModel.get({
+        _id: ObjectID(id)
+    }, function (err, todos) {
+        if (err) {
+            req.flash('error', err);
+            return res.json(utils.resultData(false, null, err.message));
+        }
+        if (!todos || todos.length === 0) {
+            req.flash('error', '无此任务');
+            return res.json(utils.resultData(false, null, '无此任务'));
+        }
+        var newTodo = new todoModel({})
+        newTodo.updateByContent({ _id: ObjectID(id) },updateParams,  function (err, result) {
+            if (err) {
+                req.flash('error', err);
+                return res.json(utils.resultData(false, null, err.message));
+            }
+            if(result===1){
+                req.flash('success', msg+'成功');
+                res.json(utils.resultData(true));
+            }else{
+                req.flash('error', '失败');
+                res.json(utils.resultData(false, '',msg+'失败'));
+            }
+        })
+    })
 }
