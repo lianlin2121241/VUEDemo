@@ -7,10 +7,10 @@
             <p v-show="item.id!=tempItem.id||!tempItem.isEdit">{{item.label}}</p>
             <p v-show="item.id==tempItem.id&&tempItem.isEdit"><input type="text" class="form-control" @keydown.enter="updateTodo(item)" v-model="tempItem.label"></p>
             <span class="input-group-btn" v-show="item.id!=tempItem.id||!tempItem.isEdit">
-              <button class="btn btn-primary btn-xs" @click="overTodo(item)" type="button" title="完成任务"><span class="glyphicon glyphicon-ok"></span></button>
+              <button class="btn btn-primary btn-xs btn-table-list" @click="overTodo(item)" type="button" title="完成任务"><span class="glyphicon glyphicon-ok"></span></button>
             </span>
             <span class="input-group-btn" v-show="item.id!=tempItem.id||!tempItem.isEdit">
-              <button class="btn btn-danger btn-xs" @click="delTodo(item)" type="button" title="删除任务"><span class="glyphicon glyphicon-remove"></span></button>
+              <button class="btn btn-danger btn-xs btn-table-list" @click="delTodo(item)" type="button" title="删除任务"><span class="glyphicon glyphicon-remove"></span></button>
             </span>
           </div>
         </li>
@@ -104,9 +104,8 @@ export default {
 }
 </script>
 <style>
-.btn{
-  margin: 0px 4px;
-  
+.btn-table-list{
+  margin: 0px 4px; 
 }
 .no-data{
   text-align: center;
