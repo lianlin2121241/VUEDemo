@@ -6,6 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import VeeValidate, { Validator } from 'vee-validate'
 import 'bootstrap/dist/css/bootstrap.css'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 

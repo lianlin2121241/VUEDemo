@@ -8,12 +8,17 @@
         <span v-show="errors.has('username')" class="help is-danger">{{ errors.first('username') }}</span>
       </div>
       <div class="form-group">
+        <label for="password">邮箱</label>
+        <input v-validate="'required|email'" type="email" class="form-control" v-model="email" id="txbEmail" placeholder="请输入邮箱">
+        <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
+      </div>
+      <div class="form-group">
         <label for="password">密码</label>
         <input type="password" class="form-control" v-model="password" id="password" placeholder="请输入密码">
       </div>
-      <button type="button" class="btn btn-primary btn-block" @click="login()">登录</button>
+      <button type="button" class="btn btn-primary btn-block" @click="register()">注册</button>
       <div class="form-group bottom-label">
-        <router-link to="/retrieve">忘记密码？</router-link>
+        <label>已有账号直接</label> <router-link to="/login">登录</router-link>
       </div>
     </form>
 	</div>
@@ -25,14 +30,16 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      email: ''
     }
   },
   methods: {
-    login () {
-      axiosInstance.post('/login', {
+    register () {
+      axiosInstance.post('/reg', {
         name: this.username,
-        password: this.password
+        password: this.password,
+        email: this.email
       })
       .then((response) => {
         console.log(response)
@@ -40,7 +47,7 @@ export default {
         if (responseData.success) {
           this.$message({
             showClose: true,
-            message: '登录成功',
+            message: '注册成功',
             type: 'success'
           })
           this.$router.push({path: '/todos'})
