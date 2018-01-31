@@ -15,12 +15,12 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "element-ui": "^2.0.8",
-    "vee-validate": "^2.0.0-rc.27",
-    "vue": "^2.5.2",
+    "element-ui": "^2.1.0",
+    "vee-validate": "^2.0.3",
+    "vue": "^2.5.13",
     "vue-router": "^3.0.1",
     "vue-validator": "^3.0.0-alpha.2",
-    "vuedraggable": "^2.15.0"
+    "vuedraggable": "^2.16.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -83,7 +83,7 @@
     "url-loader": "^0.5.8",
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
-    "vue-template-compiler": "^2.5.2",
+    "vue-template-compiler": "^2.5.13",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-middleware": "^1.12.0",
