@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 import ElementUI from 'element-ui'
 import VeeValidate, { Validator } from 'vee-validate'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -13,9 +14,24 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VeeValidate)
 
+Vue.directive('click-outside', {
+  bind: function (el, binding, vnode) {
+    el.event = function (event) {
+      if (!(el === event.target || el.contains(event.target))) {
+        vnode.context[binding.expression](event)
+      }
+    }
+    document.body.addEventListener('click', el.event)
+  },
+  unbind: function (el) {
+    document.body.removeEventListener('click', el.event)
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   template: '<App/>',
   components: { App }

@@ -6,7 +6,7 @@ const instance = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  withCredentials: false
+  withCredentials: true
 })
 
 // 添加请求拦截器

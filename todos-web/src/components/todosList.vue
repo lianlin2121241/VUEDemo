@@ -3,13 +3,13 @@
     <ul class="list-group" v-if="notOverCount > 0">
       <draggable v-model="list">
         <li v-for="item in list" @dblclick="editTodo(item)" class="list-group-item my-handle" v-if="!item.isFinished&&!item.isOver">
-          <div class="input-group" v-bind:class="{'div-block':(item.id==tempItem.id&&tempItem.isEdit)}">
-            <p v-show="item.id!=tempItem.id||!tempItem.isEdit">{{item.label}}</p>
-            <p v-show="item.id==tempItem.id&&tempItem.isEdit"><input type="text" class="form-control" @keydown.enter="updateTodo(item)" v-model="tempItem.label"></p>
-            <span class="input-group-btn" v-show="item.id!=tempItem.id||!tempItem.isEdit">
+          <div class="input-group" v-bind:class="{'div-block':(editItemList.indexOf(item._id)>-1)}">
+            <p v-show="(editItemList.indexOf(item._id)==-1)">{{item.label}}</p>
+            <p v-show="(editItemList.indexOf(item._id)>-1)"><input type="text" class="form-control" @keydown.enter="updateTodo(item)" v-model="item.label"></p>
+            <span class="input-group-btn" v-show="(editItemList.indexOf(item._id)==-1)">
               <button class="btn btn-primary btn-xs btn-table-list" @click="overTodo(item)" type="button" title="完成任务"><span class="glyphicon glyphicon-ok"></span></button>
             </span>
-            <span class="input-group-btn" v-show="item.id!=tempItem.id||!tempItem.isEdit">
+            <span class="input-group-btn" v-show="(editItemList.indexOf(item._id)==-1)">
               <button class="btn btn-danger btn-xs btn-table-list" @click="delTodo(item)" type="button" title="删除任务"><span class="glyphicon glyphicon-remove"></span></button>
             </span>
           </div>
@@ -20,54 +20,51 @@
 	</div>
 </template>
 <script>
-import bus from '../assets/eventBus'
-import storage from '../assets/storage'
+import { mapState, mapGetters } from 'vuex'
 import util from '../assets/util'
 import draggable from 'vuedraggable'  // 拖拽组件
 export default {
-  name: 'todosList',
-  data () {
-    return {
-      list: storage.fetch(),
-      tempItem: {}
-    }
+  computed: {
+    list: {
+      get: function () {
+        return this.$store.state.todos.unFinishedList
+      },
+      set: function (value) {
+        this.$store.commit('setUnfinishedList', value)
+      }
+    },
+    ...mapState({
+      editItemList: state => state.todos.editItemList
+    }),
+    ...mapGetters({
+      notOverCount: 'unFinishedListCount'
+    })
   },
   methods: {
     overTodo (item) {
-      item.isOver = true
-      item.meta.overTime = new Date().getTime()
+      this.$store.dispatch('finishTodo', item)
     },
     delTodo (item) {
-      item.isFinished = true
-      item.meta.deleteTime = new Date().getTime()
+      this.$store.dispatch('deleteTodo', item)
     },
     editTodo (item) {
-      this.tempItem = JSON.parse(JSON.stringify(item))
-      this.tempItem.isEdit = true
+      this.$store.commit('addEditItem', item)
     },
     updateTodo (item) {
-      if (!this.tempItem.label) {
-        this.tempItem = {}
+      if (!item.label) {
         return
       }
-      item.label = this.tempItem.label
-      item.meta.updateTime = new Date().getTime()
-      this.tempItem = {}
-    }
-  },
-  computed: {
-    notOverCount: function () {
-      var notOverList = this.list.filter(function (item) {
-        return !item.isFinished && !item.isOver
-      })
-      return notOverList.length
+      this.$store.dispatch('saveTodo', item)
     }
   },
   watch: {
     list: {
       handler (newValue, oldValue) {
-        storage.save(newValue)
-        bus.$emit('completeTodo')
+        console.log(newValue)
+        const ids = newValue.map((item) => {
+          return item._id
+        })
+        this.$store.dispatch('updateSort', ids)
       },
       deep: true
     }
@@ -75,31 +72,8 @@ export default {
   components: {
     draggable
   },
-  mounted () {
-    bus.$on('addTodo', msg => {
-      let uuil = util.uuid()
-      this.list.push({
-        id: uuil,
-        label: msg,
-        isFinished: false,
-        isOver: false,
-        meta: {
-          createTime: new Date().getTime(),
-          updateTime: 0,
-          overTime: 0,
-          deleteTime: 0
-        }
-      })
-    })
-    bus.$on('updateTodo', item => {
-      for (let i = 0, len = this.list.length; i < len; i++) {
-        if (this.list[i].id === item.id) {
-          this.list[i].label = item.label
-          this.list[i].meta.updateTime = new Date().getTime()
-          break
-        }
-      }
-    })
+  created () {
+    this.$store.dispatch('queryUnfinishedTodos')
   }
 }
 </script>

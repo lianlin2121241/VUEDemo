@@ -12,19 +12,27 @@
 </template>
 <script>
 import bus from '../assets/eventBus'
+import { mapState, mapGetters } from 'vuex'
 export default {
-  name: 'todosInput',
   data () {
     return {
       msg: ''
     }
+  },
+  computed: {
+    ...mapState({
+      newLabel: 'newLabel'
+    }),
+    ...mapGetters(['unFinishedList'])
   },
   methods: {
     addTodo () {
       if (!this.msg) {
         return
       }
-      bus.$emit('addTodo', this.msg)
+      this.$store.dispatch('saveTodo', {
+        label: this.msg
+      })
       this.msg = ''
     }
   }

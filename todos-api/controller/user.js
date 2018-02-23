@@ -76,7 +76,7 @@ module.exports.logout = (req, res) => {
     try {
         req.session.user = null;
         req.flash('success', '退出成功');
-        res.json(utils.resultData(true, user[0], '退出成功'));
+        res.json(utils.resultData(true, req.session.user, '退出成功'));
     } catch (e) {
         req.flash('error', e.message);
         res.json(utils.resultData(false, null, e.message));
