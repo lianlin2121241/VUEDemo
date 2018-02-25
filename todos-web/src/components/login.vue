@@ -4,12 +4,12 @@
     <form>
       <div class="form-group">
         <label for="userName">用户名</label>
-        <input v-validate="'required'" type="text" name="username" class="form-control" v-model="username" id="username" placeholder="请输入用户名">
+        <input v-validate="'required'" type="text" name="username" class="form-control" v-model="username" id="username" placeholder="请输入用户名" @keyup.enter="login()">
         <span v-show="errors.has('username')" class="help is-danger">{{ errors.first('username') }}</span>
       </div>
       <div class="form-group">
         <label for="password">密码</label>
-        <input type="password" class="form-control" v-model="password" id="password" placeholder="请输入密码">
+        <input type="password" class="form-control" v-model="password" id="password" placeholder="请输入密码" @keyup.enter="login()">
       </div>
       <button type="button" class="btn btn-primary btn-block" @click="login()">登录</button>
       <div class="form-group bottom-label">

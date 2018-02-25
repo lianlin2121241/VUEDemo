@@ -2,7 +2,7 @@
 	<div class="container">
     <div class="col-lg-12">
       <div class="dropdown pull-right" v-bind:class="{'open': (tagShowMenu === 1)}">
-        <span @click='showMenuList()'>欢迎您：<span>{{username}}</span></span>
+        <span @click.stop='showMenuList()'>欢迎您：<span>{{username}}</span></span>
         <ul v-click-outside='hideMenuList' class="dropdown-menu">
           <li><a href="#">修改密码</a></li>
           <li><a @click="logout()">退出</a></li>
@@ -41,10 +41,11 @@ export default {
       } else {
         this.tagShowMenu = 1
       }
+      console.log('showMenuList:' + this.tagShowMenu)
     },
-    hideMenuList: (e) => {
-      console.log(this.tagShowMenu)
+    hideMenuList () {
       this.tagShowMenu = 0
+      console.log('showMenuList:' + this.tagShowMenu)
     },
     logout () {
       axiosInstance.post('/logout', {})
