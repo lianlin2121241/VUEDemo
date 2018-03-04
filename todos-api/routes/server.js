@@ -5,7 +5,7 @@ var userController = require('../controller/user');
 var todoController = require('../controller/todo');
 
 router.all('*', function (req, res, next) {
-    let allowOrigins = ['http://127.0.0.1:8080', 'http://47.104.96.164'];
+    let allowOrigins = ['http://localhost:8080', 'http://127.0.0.1:8080', 'http://47.104.96.164'];
     if(allowOrigins.indexOf(req.headers.origin) === -1){
         next();
         return;
