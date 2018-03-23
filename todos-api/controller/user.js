@@ -96,3 +96,13 @@ module.exports.isLogin = (req, res, next) => {
     }
     next();
 }
+
+/**
+ * 获取登录用户的信息
+ * @param {*} req 
+ * @param {*} res 
+ */
+module.exports.getUserInfo = (req, res) => {
+    let user = req.session.user;
+    res.json(utils.resultData(true, user, '获取信息成功'));
+}

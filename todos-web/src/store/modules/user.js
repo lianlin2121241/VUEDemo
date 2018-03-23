@@ -2,7 +2,7 @@ import userApi from '../../api/user'
 import _ from 'lodash'
 
 const state = {
-  userInfo: {},
+  userInfo: null,
   loginInfo: {
     username: '',
     password: ''
@@ -24,6 +24,12 @@ const actions = {
       commit('updateUserInfo', saveResult.data.data)
     }
   },
+  getUserInfo: async ({ commit, state, dispatch }) => {
+    const saveResult = await userApi.getUserInfo()
+    if (saveResult.data.success) {
+      commit('updateUserInfo', saveResult.data.data)
+    }
+  },
   logout: async ({commit, state, dispatch}) => {
     const saveResult = await userApi.logout()
     if (saveResult.data.success) {
@@ -37,7 +43,7 @@ const mutations = {
     state.userInfo = userInfo
   },
   removeUserInfo (state) {
-    state.userInfo = {}
+    state.userInfo = null
   }
 }
 

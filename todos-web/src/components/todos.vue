@@ -2,7 +2,7 @@
 	<div class="container">
     <div class="col-lg-12">
       <div class="dropdown pull-right" v-bind:class="{'open': (tagShowMenu === 1)}">
-        <span @click.stop='showMenuList()'>欢迎您：<span>{{userInfo.name}}</span></span>
+        <span @click.stop='showMenuList()'>欢迎您：<span>{{userInfo?userInfo.name:""}}</span></span>
         <ul v-click-outside='hideMenuList' class="dropdown-menu">
           <li><a href="#">修改密码</a></li>
           <li><a @click="logout()">退出</a></li>
@@ -52,6 +52,9 @@ export default {
     logout () {
       this.$store.dispatch('logout')
     }
+  },
+  created () {
+    this.$store.dispatch('getUserInfo')
   },
   watch: {
     userInfo (newValue, oldValue) {

@@ -21,6 +21,8 @@ router.all('*', function (req, res, next) {
     }
 });
 
+// 获取登录人信息
+router.post('/getUserInfo', userController.isLogin, userController.getUserInfo);
 // 注册
 router.post('/reg', userController.reg);
 // 登录

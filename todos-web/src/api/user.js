@@ -7,6 +7,9 @@ export default {
       password: obj.password
     })
   },
+  getUserInfo () {
+    return axiosInstance.post('/getUserInfo', {})
+  },
   logout () {
     return axiosInstance.post('/logout', {})
   }
