@@ -21,10 +21,10 @@ Vue.directive('click-outside', {
         vnode.context[binding.expression](event)
       }
     }
-    document.body.addEventListener('click', el.event)
+    document.addEventListener('click', el.event)
   },
   unbind: function (el) {
-    document.body.removeEventListener('click', el.event)
+    document.removeEventListener('click', el.event)
   }
 })
 

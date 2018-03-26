@@ -92,6 +92,7 @@ module.exports.isLogin = (req, res, next) => {
     let user = req.session.user;
     if (!user) {
         req.flash('error', '用户未登录');
+        res.status(401);
         return res.json(utils.resultData(false, '', '用户未登录'));
     }
     next();

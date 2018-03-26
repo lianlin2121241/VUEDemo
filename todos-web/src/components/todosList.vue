@@ -60,7 +60,9 @@ export default {
   watch: {
     list: {
       handler (newValue, oldValue) {
-        console.log(newValue)
+        if (!newValue) {
+          return
+        }
         const ids = newValue.map((item) => {
           return item._id
         })

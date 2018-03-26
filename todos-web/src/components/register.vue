@@ -63,7 +63,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .login-container{
   width: 350px;
 }

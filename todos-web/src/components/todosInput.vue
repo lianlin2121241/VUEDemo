@@ -38,7 +38,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .search-form{
   margin-bottom:20px;
 }

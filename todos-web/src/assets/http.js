@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Config from '../config'
+import Router from '../router/index'
 
 const instance = axios.create({
   baseURL: Config.baseUrl,
@@ -24,6 +25,12 @@ instance.interceptors.response.use(function (response) {
   return response
 }, function (error) {
   // 对响应错误做点什么
+  if (error.response.status === 401 && Router.currentRoute.name !== 'login') {
+    Router.replace({
+      path: '/login',
+      query: {redirect: Router.currentRoute.fullPath}
+    })
+  }
   return Promise.reject(error)
 })
 

@@ -14,6 +14,7 @@
       <button type="button" class="btn btn-primary btn-block" @click="login()">登录</button>
       <div class="form-group bottom-label">
         <router-link to="/retrieve">忘记密码？</router-link>
+        <router-link class="fr" to="/reg">注册</router-link>
       </div>
     </form>
 	</div>
@@ -47,12 +48,15 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .login-container{
   width: 350px;
 }
 .bottom-label{
   margin-top: 10px;
+}
+.fr{
+  float: right;
 }
 </style>
 

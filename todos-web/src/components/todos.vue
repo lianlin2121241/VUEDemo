@@ -58,7 +58,7 @@ export default {
   },
   watch: {
     userInfo (newValue, oldValue) {
-      if (!newValue._id) {
+      if (!newValue) {
         this.$message({
           showClose: true,
           message: '退出成功',
