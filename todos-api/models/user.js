@@ -33,6 +33,25 @@ class User{
             callback(null,user[0]);
         })
     }
+    
+    /**
+     * @desc 根据修改内容更新user任务
+     * @param {object} params 查询条件
+     * @param {function} callback 回调函数
+     */
+    updateByContent(params = null,content=null, callback) {
+        if (!params||!content) {
+            callback(new Error('缺少参数'))
+        }
+        mongodb.updateMany("users", params, {
+            $set: content
+        }, function (err, result) {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, result);
+        })
+    }
 
     /**
      * @static

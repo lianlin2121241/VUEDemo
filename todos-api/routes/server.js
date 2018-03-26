@@ -29,6 +29,8 @@ router.post('/reg', userController.reg);
 router.post('/login', userController.login);
 // 登出
 router.post('/logout', userController.logout);
+// 修改密码
+router.post('/changePassword', userController.isLogin, userController.changePassword);
 
 // 添加任务
 router.post('/addTodo', userController.isLogin, todoController.addTodo);

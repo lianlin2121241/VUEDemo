@@ -1,3 +1,4 @@
+var ObjectID = require('mongodb').ObjectID;
 var crypto = require('crypto');
 var userModel = require('../models/user');
 var utils = require('../utils');
@@ -84,6 +85,51 @@ module.exports.logout = (req, res) => {
 }
 
 /**
+ * 修改密码
+ * @param {*} req 
+ * @param {*} res 
+ */
+module.exports.changePassword = (req, res) => {
+    var oldPassword = req.body.oldPassword,
+        newPassword = req.body.newPassword;
+    let user = req.session.user
+    let id = user._id;
+    let name = user.name;
+    userModel.get(name, function (err, user) {
+        if (err) {
+            req.flash('error', err);
+            return res.json(utils.resultData(false, null, err.message));
+        }
+        var md5 = crypto.createHash('md5');
+        password = md5.update(oldPassword).digest('hex');
+        if (password !== user[0].password) {
+            return res.json(utils.resultData(false, null, '旧密码错误'));
+        }
+        var md52 = crypto.createHash('md5');
+        password2 = md52.update(newPassword).digest('hex');
+        var newUser = new userModel({
+            name: name,
+            password: password2
+        })
+        newUser.updateByContent({ _id: ObjectID(id) },{
+            password: password2
+        },function (err, result) {
+            if (err) {
+                req.flash('error', err);
+                return res.json(utils.resultData(false, null, err.message));
+            }
+            if(result===1){
+                req.flash('success', '修改密码成功');
+                res.json(utils.resultData(true));
+            }else{
+                req.flash('error', '失败');
+                res.json(utils.resultData(false, '', '修改密码失败'));
+            }
+        })
+    })
+}
+
+/**
  * 是否登录
  * @param {*} req 
  * @param {*} res 
@@ -107,3 +153,4 @@ module.exports.getUserInfo = (req, res) => {
     let user = req.session.user;
     res.json(utils.resultData(true, user, '获取信息成功'));
 }
+

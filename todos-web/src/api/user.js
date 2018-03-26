@@ -12,5 +12,8 @@ export default {
   },
   logout () {
     return axiosInstance.post('/logout', {})
+  },
+  changePassword (data) {
+    return axiosInstance.post('/changePassword', data)
   }
 }
