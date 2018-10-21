@@ -1,9 +1,11 @@
 import axios from 'axios'
-import Config from '../config'
+// import Config from '../config'
 import Router from '../router/index'
 
+let baseUrl = window.g.baseUrl
+
 const instance = axios.create({
-  baseURL: Config.baseUrl,
+  baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json'
   },
