@@ -28,6 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 会话持久化方案
 app.use(session({
+  resave: false, //添加 resave 选项
+  saveUninitialized: true, //添加 saveUninitialized 选项
   secret: settings.cookieSecret,
   key: settings.db,
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
